@@ -7,17 +7,19 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// ✅ Proper CORS Configuration
+const cors = require("cors");
+
 const corsOptions = {
-  origin: "http://localhost:3000", // Allow frontend (Change this to your production frontend URL later)
+  origin: "http://localhost:3000", // Change to your frontend's deployed URL in production
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",
-  credentials: true, // Allow cookies & auth headers
+  credentials: true, // Allow cookies & authentication headers
   preflightContinue: false,
-  optionsSuccessStatus: 204,
+  optionsSuccessStatus: 204, // Prevents browser CORS errors
 };
 
 app.use(cors(corsOptions));
+app.options("*", cors(corsOptions)); 
 app.use(bodyParser.json());
 
 // Connect to MongoDB
