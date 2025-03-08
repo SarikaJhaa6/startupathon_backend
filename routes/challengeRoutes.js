@@ -5,7 +5,7 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 
-const UPLOADS_FOLDER = path.join('..', 'startupathon_frontend', 'public', 'challenges');
+const UPLOADS_FOLDER = path.join(__dirname, '../startupathon_frontend/public/challenges');
 console.log(`Uploading files to folder: ${UPLOADS_FOLDER}`);
 
 
