@@ -2,19 +2,17 @@ const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 const multer = require('multer');
-const fs = require('fs');
 const path = require('path');
+const fs = require('fs');
 
-const UPLOADS_FOLDER = path.join(__dirname, '../startupathon_frontend/public/challenges');
-console.log(`Uploading files to folder: ${UPLOADS_FOLDER}`);
-
-
+// Define the upload directory
+// const UPLOADS_FOLDER = "C:/Users/sarik/Documents/startupathon/startupathon_frontend/public/challenges";
+const UPLOADS_FOLDER = "startupathon/startupathon_frontend/public/challenges";
+// Ensure the folder exists (create if not)
 if (!fs.existsSync(UPLOADS_FOLDER)) {
   fs.mkdirSync(UPLOADS_FOLDER, { recursive: true });
-  console.log(`Folder created at: ${UPLOADS_FOLDER}`);
-} else {
-  console.log('Folder already exists');
 }
+
 // Multer configuration for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
