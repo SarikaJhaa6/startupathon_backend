@@ -15,8 +15,8 @@ router.post('/login', async (req, res) => {
   const { username, password } = req.body;
   
   try {
-    // Query MongoDB to find the admin user
     const admin = await Admin.findOne({ username, password });
+    console.log('Found admin:', admin); // Log to see if the admin is found
 
     if (admin) {
       res.json({ success: true });
@@ -27,5 +27,6 @@ router.post('/login', async (req, res) => {
     return res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 module.exports = router;
