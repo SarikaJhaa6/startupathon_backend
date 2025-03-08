@@ -5,8 +5,9 @@ const multer = require('multer');
 const fs = require('fs');
 const path = require('path');
 
-const UPLOADS_FOLDER = path.join(__dirname, 'public', 'challenges');
+const UPLOADS_FOLDER = path.join('..', 'startupathon_frontend', 'public', 'challenges');
 console.log(`Uploading files to folder: ${UPLOADS_FOLDER}`);
+
 
 if (!fs.existsSync(UPLOADS_FOLDER)) {
   fs.mkdirSync(UPLOADS_FOLDER, { recursive: true });
