@@ -6,8 +6,8 @@ const path = require('path');
 const fs = require('fs');
 
 // Define the upload directory
-const UPLOADS_FOLDER = "C:/Users/sarik/Documents/startupathon/startupathon_frontend/public/challenges";
-
+// const UPLOADS_FOLDER = "C:/Users/sarik/Documents/startupathon/startupathon_frontend/public/challenges";
+const UPLOADS_FOLDER = path.join(__dirname, 'public', 'challenges');
 // Ensure the folder exists (create if not)
 if (!fs.existsSync(UPLOADS_FOLDER)) {
   fs.mkdirSync(UPLOADS_FOLDER, { recursive: true });
@@ -174,5 +174,6 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+router.use('/challenges', express.static(UPLOADS_FOLDER)); // Serve images from the 'public/challenges' folder
 
 module.exports = router;
