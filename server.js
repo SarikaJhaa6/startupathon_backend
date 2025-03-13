@@ -10,7 +10,8 @@ const PORT = process.env.PORT || 5000;
 const allowedOrigins = [
   "http://localhost:3000",
   "https://startupathon-frontend.vercel.app",
-  "https://startupathon-frontend-git-main-sarikas-projects-b64b6669.vercel.app"
+  "https://startupathon-frontend-git-main-sarikas-projects-b64b6669.vercel.app",
+  "https://startupathon-frontend-xy1m-git-main-sarikas-projects-b64b6669.vercel.app"
 ];
 
 const corsOptions = {
