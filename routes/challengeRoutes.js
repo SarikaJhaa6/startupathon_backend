@@ -175,6 +175,6 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-app.use('/uploads', express.static(UPLOADS_FOLDER));
+router.use('/uploads', express.static(UPLOADS_FOLDER));
 
 module.exports = router;
