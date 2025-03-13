@@ -14,12 +14,26 @@ const allowedOrigins = [
   "https://startupathon-frontend-xy1m-git-main-sarikas-projects-b64b6669.vercel.app"
 ];
 
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     if (!origin || allowedOrigins.includes(origin)) {
+//       callback(null, true);
+//     } else {
+//       callback(new Error("Not allowed by CORS"));
+//     }
+//   },
+//   credentials: true,
+//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+//   allowedHeaders: "Content-Type,Authorization",
+//   optionsSuccessStatus: 204,
+// };
 const corsOptions = {
   origin: function (origin, callback) {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(new Error("Not allowed by CORS"));
+      console.error("Blocked by CORS:", origin); // Debugging
+      callback(null, false); // Instead of throwing an error, just block it silently
     }
   },
   credentials: true,
