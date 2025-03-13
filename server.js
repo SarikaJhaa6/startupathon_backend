@@ -12,6 +12,8 @@ const corsOptions = {
   origin: [
     "http://localhost:3000", // Local development
     "https://startupathon-frontend.vercel.app", // Production URL
+    "https://startupathon-frontend-git-main-sarikas-projects-b64b6669.vercel.app" // Add your new frontend URL here
+
   ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",

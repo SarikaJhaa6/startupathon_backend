@@ -76,7 +76,7 @@ router.get('/get-challenges', async (req, res) => {
   }
 });
 
-// Get only visible challenges (Main Dashboard) - Latest Updated First
+// ✅ Fix: Ensure router is used correctly
 router.get('/visible', async (req, res) => {
   try {
     const challenges = await Challenge.find({ status: 'display' }).sort({ updated_at: -1 });
@@ -91,7 +91,6 @@ router.get('/visible', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-
 // Add a new challenge with image upload
 router.post('/add-challenge', upload.single('image'), async (req, res) => {
   const { title, funding, description, deadline, status } = req.body;
