@@ -7,26 +7,26 @@ const mongoose = require('mongoose');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// const corsOptions = {
-//   origin: [
-//     "http://localhost:3000", // Local development
-//     "https://startupathon-frontend.vercel.app", // Production URL
-//     "https://startupathon-frontend-git-main-sarikas-projects-b64b6669.vercel.app" // Add your new frontend URL here
-//   ],
-//   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-//   allowedHeaders: "Content-Type,Authorization",
-//   credentials: true,
-//   preflightContinue: false,
-//   optionsSuccessStatus: 204,
-// };
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://startupathon-frontend.vercel.app",
+  "https://startupathon-frontend-git-main-sarikas-projects-b64b6669.vercel.app"
+];
+
 const corsOptions = {
-  origin: '*', // Allow all origins for debugging
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",
-  credentials: true,
-  preflightContinue: false,
   optionsSuccessStatus: 204,
 };
+
 
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions)); 
