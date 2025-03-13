@@ -9,7 +9,10 @@ const PORT = process.env.PORT || 5000;
 
 
 const corsOptions = {
-  origin: "http://localhost:3000", // Change to your frontend's deployed URL in production
+  origin: [
+    "http://localhost:3000", // Local development
+    "https://startupathon-frontend.vercel.app", // Production URL
+  ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: "Content-Type,Authorization",
   credentials: true, // Allow cookies & authentication headers
