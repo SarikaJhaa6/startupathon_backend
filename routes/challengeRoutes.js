@@ -7,28 +7,30 @@ const fs = require('fs');
 
 // Define the upload directory
 // const UPLOADS_FOLDER = "C:/Users/sarik/Documents/startupathon/startupathon_frontend/public/challenges";
-const UPLOADS_FOLDER = "startupathon/startupathon_frontend/public/challenges";
+const UPLOADS_FOLDER = path.join(__dirname, '../uploads');
 // Ensure the folder exists (create if not)
 if (!fs.existsSync(UPLOADS_FOLDER)) {
   fs.mkdirSync(UPLOADS_FOLDER, { recursive: true });
 }
 
-// Multer configuration for file storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, UPLOADS_FOLDER);
+    const uploadPath = path.join(__dirname, 'uploads'); // Ensure absolute path
+    fs.mkdirSync(uploadPath, { recursive: true }); // Ensure folder exists
+    cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
-    const filePath = path.join(UPLOADS_FOLDER, file.originalname);
+    const filePath = path.join(__dirname, 'uploads', file.originalname);
 
     // Check if file already exists
     if (fs.existsSync(filePath)) {
       return cb(new Error('File already exists. Please rename or use a different file.'));
     }
 
-    cb(null, file.originalname); // Save with original name if not exists
+    cb(null, file.originalname);
   }
 });
+
 
 // File filter (only allow PNG, JPG, and JPEG)
 const fileFilter = (req, file, cb) => {
@@ -59,15 +61,13 @@ const challengeSchema = new mongoose.Schema({
 
 const Challenge = mongoose.model('Challenge', challengeSchema);
 
-// Get all challenges (Admin Dashboard) - Latest Updated First
 router.get('/get-challenges', async (req, res) => {
   try {
     const challenges = await Challenge.find().sort({ updated_at: -1 });
 
-    // Append full image URL for each challenge
     const challengesWithImages = challenges.map(challenge => ({
       ...challenge._doc,
-      image: challenge.image ? `/challenges/${challenge.image}` : null
+      image: challenge.image ? `https://startupathonbackend-production.up.railway.app/uploads/${challenge.image}` : null
     }));
 
     res.json(challengesWithImages);
@@ -75,6 +75,7 @@ router.get('/get-challenges', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 
 // ✅ Fix: Ensure router is used correctly
 router.get('/visible', async (req, res) => {
@@ -83,7 +84,7 @@ router.get('/visible', async (req, res) => {
 
     const challengesWithImages = challenges.map(challenge => ({
       ...challenge._doc,
-      image: challenge.image ? `/challenges/${challenge.image}` : null
+      image: challenge.image ? `${process.env.BACKEND_URL}/uploads/${challenge.image}` : null
     }));
 
     res.json(challengesWithImages);
@@ -91,6 +92,7 @@ router.get('/visible', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
+
 // Add a new challenge with image upload
 router.post('/add-challenge', upload.single('image'), async (req, res) => {
   const { title, funding, description, deadline, status } = req.body;
@@ -111,7 +113,7 @@ router.post('/add-challenge', upload.single('image'), async (req, res) => {
     });
 
     await newChallenge.save();
-    res.json({ success: true, id: newChallenge._id, image });
+    res.json({ success: true, id: newChallenge._id, image: `https://startupathonbackend-production.up.railway.app/uploads/${image}` });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
   }
@@ -173,6 +175,6 @@ router.delete('/:id', async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-router.use('/challenges', express.static(UPLOADS_FOLDER)); // Serve images from the 'public/challenges' folder
+app.use('/uploads', express.static(UPLOADS_FOLDER));
 
 module.exports = router;
